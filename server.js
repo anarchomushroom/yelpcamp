@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 // ===================================================================
@@ -12,7 +14,7 @@ app.get('/', function(req, res) {
 	res.render('landing');
 });
 
-// Campgrounds
+// Campgrounds/GET
 app.get('/campgrounds', function(req, res) {
 	let campgrounds = [
 		{
@@ -30,6 +32,18 @@ app.get('/campgrounds', function(req, res) {
 	];
 
 	res.render('campgrounds', { campgrounds: campgrounds });
+});
+
+// Campgrounds/POST
+app.post('/campgrounds', function(req, res) {
+	res.send('This is the post route');
+	// get data from form and add to campgrounds array
+	//redirect back to campgrounds page
+});
+
+// New Campground/GET
+app.get('/campgrounds/new', function(req, res) {
+	res.render('new.ejs');
 });
 
 // Server Start
