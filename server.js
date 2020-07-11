@@ -14,6 +14,29 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
+// Schema Setup
+let campgroundSchema = new mongoose.Schema({
+	name: String,
+	image: String
+});
+
+let Campground = mongoose.model('Campground', campgroundSchema);
+
+Campground.create(
+	{
+		name: 'Granite Hill',
+		image: 'https://images.pexels.com/photos/1539225/pexels-photo-1539225.jpeg?auto=compress&cs=tinysrgb&h=350'
+	},
+	function(err, campground) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log('Newly Created Campground: ');
+			console.log(campground);
+		}
+	}
+);
+
 let campgrounds = [
 	{
 		name: 'Salmon Creek',
