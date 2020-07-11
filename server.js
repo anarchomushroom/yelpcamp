@@ -22,20 +22,20 @@ let campgroundSchema = new mongoose.Schema({
 
 let Campground = mongoose.model('Campground', campgroundSchema);
 
-Campground.create(
-	{
-		name: 'Granite Hill',
-		image: 'https://images.pexels.com/photos/1539225/pexels-photo-1539225.jpeg?auto=compress&cs=tinysrgb&h=350'
-	},
-	function(err, campground) {
-		if (err) {
-			console.log(err);
-		} else {
-			console.log('Newly Created Campground: ');
-			console.log(campground);
-		}
-	}
-);
+// Campground.create(
+// 	{
+// 		name: 'Granite Hill',
+// 		image: 'https://images.pexels.com/photos/1539225/pexels-photo-1539225.jpeg?auto=compress&cs=tinysrgb&h=350'
+// 	},
+// 	function(err, campground) {
+// 		if (err) {
+// 			console.log(err);
+// 		} else {
+// 			console.log('Newly Created Campground: ');
+// 			console.log(campground);
+// 		}
+// 	}
+// );
 
 // ===================================================================
 // ROUTES
@@ -64,9 +64,14 @@ app.post('/campgrounds', function(req, res) {
 	let name = req.body.name;
 	let image = req.body.image;
 	let newCampground = { name: name, image: image };
-	campgrounds.push(newCampground);
-	//redirect back to campgrounds page
-	res.redirect('/campgrounds');
+	// Create a new campground and save to DB
+	Campground.create(newCampground, function(err, newlyCreated) {
+		if (err) {
+			console.log(err);
+		} else {
+			res.redirect('/campgrounds');
+		}
+	});
 });
 
 // New Campground/GET
