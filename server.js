@@ -17,7 +17,8 @@ app.set('view engine', 'ejs');
 // Schema Setup
 let campgroundSchema = new mongoose.Schema({
 	name: String,
-	image: String
+	image: String,
+	description: String
 });
 
 let Campground = mongoose.model('Campground', campgroundSchema);
@@ -25,7 +26,9 @@ let Campground = mongoose.model('Campground', campgroundSchema);
 // Campground.create(
 // 	{
 // 		name: 'Granite Hill',
-// 		image: 'https://images.pexels.com/photos/1539225/pexels-photo-1539225.jpeg?auto=compress&cs=tinysrgb&h=350'
+//         image: 'https://images.pexels.com/photos/2603681/pexels-photo-2603681.jpeg?auto=compress&cs=tinysrgb&h=350',
+// 		description:
+// 			'This is a large hill near a large source of granite. Beautiful view, no bathrooms or service points.'
 // 	},
 // 	function(err, campground) {
 // 		if (err) {
@@ -53,7 +56,7 @@ app.get('/campgrounds', function(req, res) {
 		if (err) {
 			console.log(err);
 		} else {
-			res.render('campgrounds', { campgrounds: campgrounds });
+			res.render('index', { campgrounds: campgrounds });
 		}
 	});
 });
@@ -63,7 +66,8 @@ app.post('/campgrounds', function(req, res) {
 	// get data from form and add to campgrounds array
 	let name = req.body.name;
 	let image = req.body.image;
-	let newCampground = { name: name, image: image };
+	let desc = req.body.description;
+	let newCampground = { name: name, image: image, description: desc };
 	// Create a new campground and save to DB
 	Campground.create(newCampground, function(err, newlyCreated) {
 		if (err) {
@@ -77,6 +81,19 @@ app.post('/campgrounds', function(req, res) {
 // New Campground/GET
 app.get('/campgrounds/new', function(req, res) {
 	res.render('new.ejs');
+});
+
+// Show Campground/GET
+app.get('/campgrounds/:id', function(req, res) {
+	// find the campground with provided ID
+	Campground.findById(req.params.id, function(err, foundCampground) {
+		if (err) {
+			console.log(err);
+		} else {
+			// render show template with that campground
+			res.render('show', { campground: foundCampground });
+		}
+	});
 });
 
 // Server Start
