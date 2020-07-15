@@ -18,23 +18,6 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
-// Campground.create(
-// 	{
-// 		name: 'Granite Hill',
-//         image: 'https://images.pexels.com/photos/2603681/pexels-photo-2603681.jpeg?auto=compress&cs=tinysrgb&h=350',
-// 		description:
-// 			'This is a large hill near a large source of granite. Beautiful view, no bathrooms or service points.'
-// 	},
-// 	function(err, campground) {
-// 		if (err) {
-// 			console.log(err);
-// 		} else {
-// 			console.log('Newly Created Campground: ');
-// 			console.log(campground);
-// 		}
-// 	}
-// );
-
 // ===================================================================
 // ROUTES
 // ===================================================================
@@ -81,10 +64,11 @@ app.get('/campgrounds/new', function(req, res) {
 // SHOW - show more information about specific campground
 app.get('/campgrounds/:id', function(req, res) {
 	// find the campground with provided ID
-	Campground.findById(req.params.id, function(err, foundCampground) {
+	Campground.findById(req.params.id).populate('comments').exec(function(err, foundCampground) {
 		if (err) {
 			console.log(err);
 		} else {
+			console.log(foundCampground);
 			// render show template with that campground
 			res.render('show', { campground: foundCampground });
 		}
