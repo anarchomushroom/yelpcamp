@@ -164,6 +164,11 @@ app.post(
 	function(req, res) {}
 );
 
+app.get('/logout', function(req, res) {
+	req.logout();
+	res.redirect('/campgrounds');
+});
+
 // Server Start
 app.listen(5000, function() {
 	console.log('Server has started at localhost:5000');
