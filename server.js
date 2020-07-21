@@ -17,6 +17,7 @@ const indexRoutes = require('./routes/index');
 // Commented out to prevent seeding on DB load
 // seedDB();
 
+mongoose.set('useFindAndModify', false);
 mongoose
 	.connect('mongodb://localhost/yelp_camp', {
 		useNewUrlParser: true,
