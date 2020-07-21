@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
+const campground = require('../models/campground');
 
 // INDEX get all campgrounds
 router.get('/', function(req, res) {
@@ -55,13 +56,22 @@ router.get('/:id', function(req, res) {
 
 // EDIT campground
 router.get('/:id/edit', function(req, res) {
-	Campground.findById(req.params.id, function(err, foundCampground) {
-		if (err) {
-			res.redirect('/campgrounds');
-		} else {
-			res.render('campgrounds/edit', { campground: foundCampground });
-		}
-	});
+	// is user logged in
+	if (req.isAuthenticated()) {
+		Campground.findById(req.params.id, function(err, foundCampground) {
+			if (err) {
+				res.redirect('/campgrounds');
+			} else {
+				if (foundCampground.author.id.equals(req.user._id)) {
+					res.render('campgrounds/edit', { campground: foundCampground });
+				} else {
+					res.send('You do not have permission to do that!');
+				}
+			}
+		});
+	} else {
+		res.redirect('/login');
+	}
 });
 
 // UPDATE campground
