@@ -8,6 +8,7 @@ const Campground = require('./models/campground');
 const Comment = require('./models/comment');
 const User = require('./models/user');
 const seedDB = require('./seeds');
+const methodOverride = require('method-override');
 // Require routes
 const commentRoutes = require('./routes/comments');
 const campgroundRoutes = require('./routes/campgrounds');
@@ -27,6 +28,7 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(express.static(`${__dirname}/public`));
+app.use(methodOverride('_method'));
 
 // ===================================================================
 // PASSPORT CONFIG
